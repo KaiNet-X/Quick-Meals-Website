@@ -6,25 +6,20 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using QuickMeals.Models;
+using QuickMeals.Models.Authentication;
 
 namespace QuickMeals.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(AuthenticationContext context)
         {
-            _logger = logger;
+            AuthenticationHandler.context = context;
         }
 
         public IActionResult Index()
         {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
+            ViewBag.User = AuthenticationHandler.CurrentUser(HttpContext.Session);
             return View();
         }
 

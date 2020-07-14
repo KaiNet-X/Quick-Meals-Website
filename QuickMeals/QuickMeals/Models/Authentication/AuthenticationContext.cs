@@ -16,7 +16,7 @@ namespace QuickMeals.Models.Authentication
             builder.Entity<Role>().HasData(new Role[]{
                 new Role { RoleID = 0, RoleName = "Annonymous" },
                 new Role { RoleID = 1, RoleName = "User" },
-                new Role { RoleID = 3, RoleName = "Admin" }
+                new Role { RoleID = 2, RoleName = "Admin" }
             });
         }
     }

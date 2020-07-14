@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,10 +29,22 @@ namespace QuickMeals.Models.Authentication
             }
         }
         //checks whether a user exists in the database
-        public static bool UserExists(User user) =>
-            context.Users.Find(user.UserName) != null ? true : false;
-        public static bool UserExists(string userName) =>
-            context.Users.Find(userName) != null ? true : false;
+        public static bool UserExists(User user)
+        {
+            if (context.Users.Find(user.UserName) != null) return true;
+            return false;
+        }
+        public static bool UserExists(string userName)
+        {
+            if (context.Users.Find(userName) != null) return true;
+            return false;
+        }
+        //Add user to database
+        public static void CreateUser(User user)
+        {
+            context.Users.Add(user);
+            context.SaveChanges();
+        }
         //checks whether a user is currently signed into the app
         public static bool UserSignedIn(User user)
         {
@@ -88,6 +101,11 @@ namespace QuickMeals.Models.Authentication
         {
             session.Remove("USER");
             Sessions.Remove(session);
+        }
+        //gets the active user for the given session
+        public static User CurrentUser(ISession session)
+        {
+            return session.GetObject<User>("USER");
         }
     }
 }

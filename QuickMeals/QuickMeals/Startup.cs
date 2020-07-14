@@ -1,13 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using QuickMeals.Models.Authentication;
 
 namespace QuickMeals
 {
@@ -27,6 +25,9 @@ namespace QuickMeals
 
             services.AddMemoryCache();
             services.AddSession();
+
+            services.AddDbContext<AuthenticationContext>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("Users")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
