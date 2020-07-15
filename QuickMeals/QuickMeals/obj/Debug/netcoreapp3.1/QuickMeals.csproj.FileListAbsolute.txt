@@ -143,3 +143,6 @@ C:\Users\User\Documents\GitHub\Quick-Meals-Website\QuickMeals\QuickMeals\bin\Deb
 C:\Users\User\Documents\GitHub\Quick-Meals-Website\QuickMeals\QuickMeals\obj\Debug\netcoreapp3.1\QuickMeals.csproj.CoreCompileInputs.cache
 C:\Users\User\Documents\GitHub\Quick-Meals-Website\QuickMeals\QuickMeals\obj\Debug\netcoreapp3.1\QuickMeals.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\User\Documents\GitHub\Quick-Meals-Website\QuickMeals\QuickMeals\obj\Debug\netcoreapp3.1\Razor\Views\SignIn\SignIn.cshtml.g.cs
+C:\Users\User\Documents\GitHub\Quick-Meals-Website\QuickMeals\QuickMeals\obj\Debug\netcoreapp3.1\Razor\Views\Recipe\Index.cshtml.g.cs
+C:\Users\User\Documents\GitHub\Quick-Meals-Website\QuickMeals\QuickMeals\obj\Debug\netcoreapp3.1\Razor\Views\Recipe\Delete.cshtml.g.cs
+C:\Users\User\Documents\GitHub\Quick-Meals-Website\QuickMeals\QuickMeals\obj\Debug\netcoreapp3.1\Razor\Views\Recipe\Edit.cshtml.g.cs

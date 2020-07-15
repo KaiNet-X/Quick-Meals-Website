@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using QuickMeals.Data;
 using QuickMeals.Models;
 using QuickMeals.Models.Authentication;
 
@@ -12,15 +13,20 @@ namespace QuickMeals.Controllers
 {
     public class HomeController : Controller
     {
-        public HomeController(AuthenticationContext context)
+        private QuickMealsContext context { get; set; }
+        public HomeController(AuthenticationContext context, QuickMealsContext ctx)
         {
             AuthenticationHandler.context = context;
+            this.context = ctx;
         }
 
         public IActionResult Index()
         {
             ViewBag.User = AuthenticationHandler.CurrentUser(HttpContext.Session);
-            return View();
+
+            var Recipes = context.Recipes.OrderBy(mbox => mbox.Title).ToList();
+            return View(Recipes);
+            //need to put name of view here
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

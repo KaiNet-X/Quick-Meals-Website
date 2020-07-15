@@ -1,0 +1,15 @@
+﻿@model Recipe
+@{ 
+    ViewBag.Title = "Delete Recipe";
+}
+
+<h2>Confirm Deletion</h2>
+<h3>@Model.Title (@Model.Ingredients) </h3>
+
+<form asp--action="Delete" method="post">
+    <input type="hidden" asp-for="RecipeId"/>
+
+    <button type="submit" class="btn btn-primary">Delete</button>
+    <a asp-controller="Home" asp-action="Index"
+       class="btn btn-primary">Cancel</a>
+</form>

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using QuickMeals.Models.Authentication;
+using QuickMeals.Data;
 
 namespace QuickMeals
 {
@@ -25,6 +26,10 @@ namespace QuickMeals
 
             services.AddMemoryCache();
             services.AddSession();
+
+                        services.AddDbContext<QuickMealsContext>(options =>
+            options.UseSqlServer("Server=tcp:lxiong.database.windows.net,1433;Initial Catalog=QuickMeals;Persist Security Info=False;User ID=lxiong;Password=Summer50317;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
+                //Configuration.GetConnectionString("QuickMealContext"))); 
 
             services.AddDbContext<AuthenticationContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("Users")));

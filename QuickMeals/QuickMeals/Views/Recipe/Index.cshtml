@@ -1,0 +1,33 @@
+﻿@model List<Recipe>
+@{ 
+    ViewBag.Title = "Quick Meals";
+}
+
+<h2>Recipe List</h2>
+
+<a asp-controller="Recipe" asp-action="Add">Add New Quick Meal</a>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>CookTime</th>
+            <th>Ingredient</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var Recipe in Model)
+        {
+            <tr>
+                <td>@Recipe.Title</td>
+                <td>@Recipe.CookTime</td>
+                <td>@Recipe.Ingredients</td>
+                <td>@Recipe.Description</td>
+                <td>
+                    <a asp-controller="Recipe" asp-action="Edit" asp-route-id="@Recipe.RecipeId">Edit</a>
+                    <a asp-controller="Recipe" asp-action="Delete" asp-route-id="@Recipe.RecipeId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
