@@ -17,13 +17,15 @@ namespace QuickMeals.Controllers
         [HttpGet]
         public IActionResult Register()
         {
-            if (AuthenticationHandler.CurrentUser(HttpContext.Session) != null)
+            if (AuthorizationHandler.IsSignedIn(HttpContext.Session))
                 return RedirectToAction("Index", "Home");
             return View();
         }
         [HttpPost]
         public IActionResult Register(User user)
         {
+            if (AuthorizationHandler.IsSignedIn(HttpContext.Session))
+                return RedirectToAction("Index", "Home");
             if (ModelState.IsValid)
             {
                 if (!AuthenticationHandler.UserExists(user))
@@ -39,14 +41,16 @@ namespace QuickMeals.Controllers
         [HttpGet]
         public IActionResult SignIn()
         {
-            if (AuthenticationHandler.CurrentUser(HttpContext.Session) != null)
+            if (AuthorizationHandler.IsSignedIn(HttpContext.Session))
                 return RedirectToAction("Index", "Home");
             return View();
         }
         [HttpPost]
         public IActionResult SignIn(User user)
         {
-            if(AuthenticationHandler.UserExists(user))
+            if (AuthorizationHandler.IsSignedIn(HttpContext.Session))
+                return RedirectToAction("Index", "Home");
+            if (AuthenticationHandler.UserExists(user))
             {
                 if(AuthenticationHandler.PassedSignin(user))
                 {
@@ -75,7 +79,7 @@ namespace QuickMeals.Controllers
         [HttpGet]
         public IActionResult SignOut()
         {
-            if (AuthenticationHandler.CurrentUser(HttpContext.Session) == null)
+            if (!AuthorizationHandler.IsSignedIn(HttpContext.Session))
                 return RedirectToAction("Index", "Home");
             ViewBag.User = AuthenticationHandler.CurrentUser(HttpContext.Session);
             return View();
@@ -83,6 +87,8 @@ namespace QuickMeals.Controllers
         [HttpPost]
         public IActionResult SignOut(bool f = false)
         {
+            if (!AuthorizationHandler.IsSignedIn(HttpContext.Session))
+                return RedirectToAction("Index", "Home");
             AuthenticationHandler.SignOut(HttpContext.Session);
             return RedirectToAction("Index", "Home");
         }

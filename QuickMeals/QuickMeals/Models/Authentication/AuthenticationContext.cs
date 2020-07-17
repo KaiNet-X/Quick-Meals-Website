@@ -14,10 +14,12 @@ namespace QuickMeals.Models.Authentication
             base.OnModelCreating(builder);
 
             builder.Entity<Role>().HasData(new Role[]{
-                new Role { RoleID = 0, RoleName = "Annonymous" },
+                new Role { RoleID = 0, RoleName = "Anonymous" },
                 new Role { RoleID = 1, RoleName = "User" },
                 new Role { RoleID = 2, RoleName = "Admin" }
             });
+            builder.Entity<User>().HasData(new User[]
+                { new User {UserName = "", Password = "" ,RoleID = 0} });
         }
     }
 }

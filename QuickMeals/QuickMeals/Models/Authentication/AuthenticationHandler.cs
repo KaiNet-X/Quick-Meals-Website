@@ -93,6 +93,7 @@ namespace QuickMeals.Models.Authentication
         //signs the user into their session, and adds their session to the list
         public static void SignIn(ISession session, User user)
         {
+            user = GetDatabaseInstance(user);
             session.SetObject<User>("USER", user);
             Sessions.Add(session);
         }
@@ -105,7 +106,12 @@ namespace QuickMeals.Models.Authentication
         //gets the active user for the given session
         public static User CurrentUser(ISession session)
         {
-            return session.GetObject<User>("USER");
+            User user = session.GetObject<User>("USER");
+            if(user == null)
+            {
+                user = context.Users.Include(u => u.Role).Where(u => u.RoleID == 0).SingleOrDefault();
+            }
+            return user;
         }
     }
 }
