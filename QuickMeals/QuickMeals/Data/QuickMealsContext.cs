@@ -19,7 +19,7 @@ namespace QuickMeals.Data
                 new Recipe
                 {
                     RecipeId = 1,
-                    UserId = 1,
+                    Username = "",
                     CookTime = 30,
                     Title = "Creamy Herb Chicken",
                     Ingredients = "Chicken, garlic, oil, parsley, thyme, rosemary and milk",
@@ -29,12 +29,11 @@ namespace QuickMeals.Data
                     " oil and saute garlic, parsley, thyme and rosemary. 4. Stir in milk or cream. " +
                     "5. Bring to a boil. Add cornstarch and stir until thickened. 6. Return chicken to" +
                     " skillet and sprinkle extra herbs if desired."
-
                 },
                 new Recipe
                 {
                     RecipeId = 2,
-                    UserId = 2,
+                    Username = "",
                     Title = "Garlic Honey Chicken",
                     CookTime = 15,
                     Ingredients = "Olive oil, chicken breast, honey, soy sauce, garlic, red pepper flakes, salt and pepper",

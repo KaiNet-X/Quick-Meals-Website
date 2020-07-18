@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using QuickMeals.Data;
@@ -15,10 +17,9 @@ namespace QuickMeals.Controllers
         // make changes. I also added Views and Models - LX
         private QuickMealsContext context { get; set; }
 
-        public RecipeController(QuickMealsContext ctx, AuthenticationContext auth)
+        public RecipeController(QuickMealsContext ctx)
         {
             context = ctx;
-            AuthenticationHandler.context = auth;
         }
         [HttpGet]
         public IActionResult Add()
@@ -48,11 +49,30 @@ namespace QuickMeals.Controllers
             {
                 if (!AuthorizationHandler.IsSignedIn(HttpContext.Session))
                     return RedirectToAction("Index", "Home");
+                int ID = recipe.RecipeId;
                 if (recipe.RecipeId == 0)
+                {
                     context.Recipes.Add(recipe);
+                    context.SaveChanges();
+                    ID = context.Recipes.OrderByDescending(r => r.RecipeId).FirstOrDefault().RecipeId;
+                }
                 else
+                {
                     context.Recipes.Update(recipe);
-                context.SaveChanges();
+                    context.SaveChanges();
+                }
+                //check if file has been uploaded
+                if (recipe.File != null)
+                {
+                    string FilePath = Directory.GetCurrentDirectory() + "/wwwroot/RecipeImages";
+                    string name = $"/{ID}{Path.GetExtension(recipe.File.FileName)}";
+                    //create and dispose of file stream from memory. Must be set to a file name and not a folder
+                    using (Stream str = new FileStream(FilePath + name, FileMode.Create))
+                    {
+                        //copy file from ram into storage
+                        recipe.File.CopyTo(str);
+                    }
+                }
                 return RedirectToAction("Index", "Home");
             }
             else { ViewBag.Action = (recipe.RecipeId == 0) ? "Add" : "Edit";
@@ -75,9 +95,15 @@ namespace QuickMeals.Controllers
             if (!AuthorizationHandler.IsSignedIn(HttpContext.Session))
                 return RedirectToAction("Index", "Home");
             ViewBag.SignedIn = AuthorizationHandler.IsSignedIn(HttpContext.Session);
+            if (System.IO.File.Exists(Recipe.Base + recipe.GetFileName()))
+                System.IO.File.Delete(Recipe.Base + recipe.GetFileName());
             context.Recipes.Remove(recipe);
             context.SaveChanges();
             return RedirectToAction("Index", "Home");
+        }
+        public IActionResult Details(Recipe recipe)
+        {
+            return View(recipe);
         }
         public IActionResult Index()
         {

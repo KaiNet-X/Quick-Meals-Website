@@ -5,7 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200718151306_usrdepens.cs" />
+    <Compile Remove="Migrations\20200718151306_usrdepens.Designer.cs" />
+    <Compile Remove="Migrations\QuickMeals\20200718151510_recipdepens.cs" />
+    <Compile Remove="Migrations\QuickMeals\20200718151510_recipdepens.Designer.cs" />
+    <Compile Remove="Migrations\QuickMeals\20200718152440_fKeys.cs" />
+    <Compile Remove="Migrations\QuickMeals\20200718152440_fKeys.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Areas\" />
+    <Folder Include="wwwroot\RecipeImages\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -10,9 +10,9 @@ namespace QuickMeals.Controllers
 {
     public class SignInController : Controller
     {
-        public SignInController(AuthenticationContext context)
+        public SignInController()
         {
-            AuthenticationHandler.context = context;
+
         }
         [HttpGet]
         public IActionResult Register()
@@ -34,7 +34,7 @@ namespace QuickMeals.Controllers
                     AuthenticationHandler.SignIn(HttpContext.Session, user);
                     return RedirectToAction("Index", "Home");
                 }
-                ModelState.AddModelError("UserName", $"User with username {user.UserName} already exists");
+                ModelState.AddModelError("UserName", $"User with username {user.Username} already exists");
             }    
             return View(user);
         }
@@ -62,7 +62,7 @@ namespace QuickMeals.Controllers
                     }
                     else
                     {
-                        ModelState.AddModelError("UserName", $"User {user.UserName} is signed in on annother device.");
+                        ModelState.AddModelError("UserName", $"User {user.Username} is signed in on annother device.");
                     }
                 }
                 else
@@ -72,7 +72,7 @@ namespace QuickMeals.Controllers
             }
             else
             {
-                ModelState.AddModelError("UserName", $"User {user.UserName} does not exist.");
+                ModelState.AddModelError("UserName", $"User {user.Username} does not exist.");
             }
             return View(user);
         }

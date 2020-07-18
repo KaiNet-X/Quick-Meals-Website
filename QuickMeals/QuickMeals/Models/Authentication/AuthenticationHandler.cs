@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace QuickMeals.Models.Authentication
@@ -16,7 +17,17 @@ namespace QuickMeals.Models.Authentication
          */
         private static List<ISession> Sessions = new List<ISession>();
         //sets the authentication context (note, haven't configured the database that uses it yet)
-        public static AuthenticationContext context { private get; set; }
+        private static AuthenticationContext context 
+        {
+            get 
+            {
+                var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json");
+                var configuration = builder.Build();
+                var optionsBuilder = new DbContextOptionsBuilder<AuthenticationContext>();
+                optionsBuilder.UseSqlServer(configuration.GetConnectionString("Users"));
+                return new AuthenticationContext(optionsBuilder.Options);
+            }
+        }
         //remove all sessions that have been closed
         private static void RemoveNullSessions()
         {
@@ -31,19 +42,28 @@ namespace QuickMeals.Models.Authentication
         //checks whether a user exists in the database
         public static bool UserExists(User user)
         {
-            if (context.Users.Find(user.UserName) != null) return true;
-            return false;
+            using (AuthenticationContext ctx = context)
+            {
+                if (ctx.Users.Find(user.Username) != null) return true;
+                return false;
+            }
         }
         public static bool UserExists(string userName)
         {
-            if (context.Users.Find(userName) != null) return true;
-            return false;
+            using (AuthenticationContext ctx = context)
+            {
+                if (ctx.Users.Find(userName) != null) return true;
+                return false;
+            }
         }
         //Add user to database
         public static void CreateUser(User user)
         {
-            context.Users.Add(user);
-            context.SaveChanges();
+            using (AuthenticationContext ctx = context)
+            {
+                ctx.Users.Add(user);
+                ctx.SaveChanges();
+            }
         }
         //checks whether a user is currently signed into the app
         public static bool UserSignedIn(User user)
@@ -56,7 +76,7 @@ namespace QuickMeals.Models.Authentication
                     User loggedUser = session.GetObject<User>("USER");
                     if (loggedUser != null)
                     {
-                        if (loggedUser.UserName == user.UserName) return true;
+                        if (loggedUser.Username == user.Username) return true;
                     }
                 }
             }
@@ -72,7 +92,7 @@ namespace QuickMeals.Models.Authentication
                     User loggedUser = session.GetObject<User>("USER");
                     if (loggedUser != null)
                     {
-                        if (loggedUser.UserName == userName) return true;
+                        if (loggedUser.Username == userName) return true;
                     }
                 }
             }
@@ -81,13 +101,14 @@ namespace QuickMeals.Models.Authentication
         //gets user from database with all associated information
         public static User GetDatabaseInstance(User user)
         {
-            return context.Users.Where(u => u.UserName == user.UserName).Include(u => u.Role).ToArray()[0];
+            using (AuthenticationContext ctx = context)
+                return ctx.Users.Where(u => u.Username == user.Username).Include(u => u.Role).ToArray()[0];
         }
         //checks wether the user has the correct password
         public static bool PassedSignin(User user)
         {
             User dbInstance = GetDatabaseInstance(user);
-            if (user.UserName == dbInstance.UserName && user.Password == dbInstance.Password) return true;
+            if (user.Username == dbInstance.Username && user.Password == dbInstance.Password) return true;
             return false;
         }
         //signs the user into their session, and adds their session to the list

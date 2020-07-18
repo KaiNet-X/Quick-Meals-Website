@@ -14,9 +14,8 @@ namespace QuickMeals.Controllers
     public class HomeController : Controller
     {
         private QuickMealsContext context { get; set; }
-        public HomeController(AuthenticationContext context, QuickMealsContext ctx)
+        public HomeController(QuickMealsContext ctx)
         {
-            AuthenticationHandler.context = context;
             this.context = ctx;
         }
 

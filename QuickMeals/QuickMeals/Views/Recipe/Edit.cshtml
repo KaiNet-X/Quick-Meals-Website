@@ -5,8 +5,10 @@
 }
 
 <h2>@ViewBag.Title</h2>
-
-<form asp-action="Edit" method="post">
+@{ 
+    //enctype allows multipart/form-data allows files to be uploaded
+}
+<form asp-action="Edit" method="post" enctype="multipart/form-data">
     <div asp-validation-summary="All" class="text-danger"></div>
 
     <div class="form-group">
@@ -27,6 +29,11 @@
     <div class="form-group">
         <label asp-for="Description">Description</label>
         <input asp-for="Description" class="form-control">
+    </div>
+
+    <div class="form-group">
+        <label asp-for="File">Add Image</label>
+        <input asp-for="File" class="form-control" type="file" accept=".jpeg, .jpg, .png, .img">
     </div>
 
     <input type="hidden" asp-for="RecipeId" />

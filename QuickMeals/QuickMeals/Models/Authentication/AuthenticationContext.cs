@@ -19,7 +19,7 @@ namespace QuickMeals.Models.Authentication
                 new Role { RoleID = 2, RoleName = "Admin" }
             });
             builder.Entity<User>().HasData(new User[]
-                { new User {UserName = "", Password = "" ,RoleID = 0} });
+                { new User {Username = "", Password = "" , RoleID = 0} });
         }
     }
 }

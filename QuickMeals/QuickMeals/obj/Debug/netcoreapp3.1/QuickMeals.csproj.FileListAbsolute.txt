@@ -146,3 +146,5 @@ C:\Users\User\Documents\GitHub\Quick-Meals-Website\QuickMeals\QuickMeals\obj\Deb
 C:\Users\User\Documents\GitHub\Quick-Meals-Website\QuickMeals\QuickMeals\obj\Debug\netcoreapp3.1\Razor\Views\Recipe\Index.cshtml.g.cs
 C:\Users\User\Documents\GitHub\Quick-Meals-Website\QuickMeals\QuickMeals\obj\Debug\netcoreapp3.1\Razor\Views\Recipe\Delete.cshtml.g.cs
 C:\Users\User\Documents\GitHub\Quick-Meals-Website\QuickMeals\QuickMeals\obj\Debug\netcoreapp3.1\Razor\Views\Recipe\Edit.cshtml.g.cs
+C:\Users\User\Documents\GitHub\Quick-Meals-Website\QuickMeals\QuickMeals\bin\Debug\netcoreapp3.1\libman.json
+C:\Users\User\Documents\GitHub\Quick-Meals-Website\QuickMeals\QuickMeals\obj\Debug\netcoreapp3.1\Razor\Views\Recipe\Details.cshtml.g.cs

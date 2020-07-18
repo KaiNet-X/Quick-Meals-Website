@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using QuickMeals.Models.Authentication;
+using QuickMeals.Data;
 
-namespace QuickMeals.Migrations
+namespace QuickMeals.Migrations.QuickMeals
 {
-    [DbContext(typeof(AuthenticationContext))]
-    partial class AuthenticationContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(QuickMealsContext))]
+    [Migration("20200718191955_validation")]
+    partial class validation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,24 +33,7 @@ namespace QuickMeals.Migrations
 
                     b.HasKey("RoleID");
 
-                    b.ToTable("Roles");
-
-                    b.HasData(
-                        new
-                        {
-                            RoleID = 0,
-                            RoleName = "Anonymous"
-                        },
-                        new
-                        {
-                            RoleID = 1,
-                            RoleName = "User"
-                        },
-                        new
-                        {
-                            RoleID = 2,
-                            RoleName = "Admin"
-                        });
+                    b.ToTable("Role");
                 });
 
             modelBuilder.Entity("QuickMeals.Models.Authentication.User", b =>
@@ -69,15 +54,7 @@ namespace QuickMeals.Migrations
 
                     b.HasIndex("RoleID");
 
-                    b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Username = "",
-                            Password = "",
-                            RoleID = 0
-                        });
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("QuickMeals.Models.Recipe", b =>
@@ -112,7 +89,27 @@ namespace QuickMeals.Migrations
 
                     b.HasIndex("Username1");
 
-                    b.ToTable("Recipe");
+                    b.ToTable("Recipes");
+
+                    b.HasData(
+                        new
+                        {
+                            RecipeId = 1,
+                            CookTime = 30,
+                            Description = "1. Coat chicken breasts with onion and garlic powders and herbs. Season generously with salt and pepper. 2. Heat1 Tablespoon of oil and cook chicken breasts. Transfer to plate. 3. Heat oil and saute garlic, parsley, thyme and rosemary. 4. Stir in milk or cream. 5. Bring to a boil. Add cornstarch and stir until thickened. 6. Return chicken to skillet and sprinkle extra herbs if desired.",
+                            Ingredients = "Chicken, garlic, oil, parsley, thyme, rosemary and milk",
+                            Title = "Creamy Herb Chicken",
+                            Username = ""
+                        },
+                        new
+                        {
+                            RecipeId = 2,
+                            CookTime = 15,
+                            Description = "1. Heat oil over medium heat. 2. Lightly season the cubed chicken with salt and pepper. 3. Add the chicken to the skillet and brown on one side. 4. Make the glaze. Whisk the honey, soy sauce, garlic, and red pepper flakes in a small bowl. 5. Add the sauce to the pan and toss to coat chicken. Cook until chicken is done. 6. Serve on steamed rice.",
+                            Ingredients = "Olive oil, chicken breast, honey, soy sauce, garlic, red pepper flakes, salt and pepper",
+                            Title = "Garlic Honey Chicken",
+                            Username = ""
+                        });
                 });
 
             modelBuilder.Entity("QuickMeals.Models.Authentication.User", b =>
