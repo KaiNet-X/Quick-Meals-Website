@@ -6,18 +6,61 @@
     <title>@ViewData["Title"] - QuickMeals</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+    <style>
+        @@font-face {
+            font-family: 'lightbeach';
+            src: url('/fonts/lightbeach.otf') format('opentype');
+        }
+
+        .default-font {
+            font-family: 'Times New Roman'
+        }
+
+        body {
+            font-weight: 300;
+            font-size: 20px;
+            font-family: lightbeach;
+        }
+
+        .bg-green {
+            background-color: limegreen;
+        }
+
+        .bg-lightgreen {
+            background-color: #b8ffb9;
+        }
+
+        .border-fancy {
+            border-style: dotted;
+            border-width: 4px;
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar {
+            width: 15px;
+        }
+        ::-webkit-scrollbar-track{
+            background-color:lightgreen;
+        }
+        ::-webkit-scrollbar-thumb {
+            background-color: #39fc03;
+        }
+    </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-green text-light border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">QuickMeals</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><h2>QuickMeals</h2></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="navbar-nav flex-grow-1 border-fancy">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
@@ -54,14 +97,10 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-muted bg-green">
         <div class="container">
             &copy; 2020 - QuickMeals
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @RenderSection("Scripts", required: false)
 </body>
 </html>

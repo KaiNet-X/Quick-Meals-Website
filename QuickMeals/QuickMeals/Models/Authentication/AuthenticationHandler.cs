@@ -10,16 +10,10 @@ namespace QuickMeals.Models.Authentication
 {
     public static class AuthenticationHandler
     {
-        /*
-         * sessions are added to this list when signed in and removed from wjen signed out.
-         * this provides a way of keeping track of which users are signed in, and when they
-         * close out of the browser without signing out, as their session is set to null
-         */
-        private static List<ISession> Sessions = new List<ISession>();
-        //sets the authentication context (note, haven't configured the database that uses it yet)
-        private static AuthenticationContext context 
+        private static List<UserTimer> LoggedInUsers = new List<UserTimer>();
+        private static AuthenticationContext context
         {
-            get 
+            get
             {
                 var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json");
                 var configuration = builder.Build();
@@ -28,111 +22,157 @@ namespace QuickMeals.Models.Authentication
                 return new AuthenticationContext(optionsBuilder.Options);
             }
         }
-        //remove all sessions that have been closed
-        private static void RemoveNullSessions()
+        private static DateTime StopWatch;
+        private static int TimeOutMinutes = 15;
+        private static void IncrementUserTimeOuts()
         {
-            foreach (ISession session in Sessions)
+            if (StopWatch == null)
+                StopWatch = DateTime.Now;
+            else
             {
-                if (session == null)
+                for (int i = 0; i < LoggedInUsers.Count; i++)
                 {
-                    Sessions.Remove(session);
+                    DateTime now = DateTime.Now;
+                    LoggedInUsers[i].timer += ((now - StopWatch).Minutes * 60 + (now - StopWatch).Seconds);
+                }
+            }
+            StopWatch = DateTime.Now;
+        }
+        private static void ClearTimedOutUsers()
+        {
+            for (int i = 0; i < LoggedInUsers.Count; i++)
+            {
+                if ((LoggedInUsers[i].timer) >= TimeOutMinutes * 60)
+                {
+                    LoggedInUsers.Remove(LoggedInUsers[i]);
                 }
             }
         }
-        //checks whether a user exists in the database
+        private static void RefreshTimer(User user)
+        {
+            if (user != null)
+            {
+                UserTimer u = LoggedInUsers.FirstOrDefault(ut => ut.user.Username == user.Username);
+                if (u != null)
+                    u.timer = 0;
+            }
+        }
         public static bool UserExists(User user)
         {
-            using (AuthenticationContext ctx = context)
-            {
-                if (ctx.Users.Find(user.Username) != null) return true;
-                return false;
-            }
+            bool userExists = false;
+            if (user != null)
+                using (AuthenticationContext ctx = context)
+                {
+                    userExists = ctx.Users.Find(user.Username) != null;
+                }
+            return userExists;
         }
-        public static bool UserExists(string userName)
-        {
-            using (AuthenticationContext ctx = context)
-            {
-                if (ctx.Users.Find(userName) != null) return true;
-                return false;
-            }
-        }
-        //Add user to database
         public static void CreateUser(User user)
         {
-            using (AuthenticationContext ctx = context)
+            if (UserExists(user))
+                return;
+            if (user != null)
             {
-                ctx.Users.Add(user);
-                ctx.SaveChanges();
+                using (AuthenticationContext ctx = context)
+                {
+                    ctx.Users.Add(user);
+                    ctx.SaveChanges();
+                }
             }
         }
-        //checks whether a user is currently signed into the app
         public static bool UserSignedIn(User user)
         {
-            RemoveNullSessions();
-            foreach (ISession session in Sessions)
-            {
-                if (session.Keys.Contains("USER"))
+            IncrementUserTimeOuts();
+            ClearTimedOutUsers();
+            if (user != null)
+                foreach (UserTimer u in LoggedInUsers)
                 {
-                    User loggedUser = session.GetObject<User>("USER");
-                    if (loggedUser != null)
-                    {
-                        if (loggedUser.Username == user.Username) return true;
-                    }
+                    if (u.user.Username == user.Username) return true;
                 }
-            }
             return false;
         }
-        public static bool UserSignedIn(string userName)
-        {
-            RemoveNullSessions();
-            foreach (ISession session in Sessions)
-            {
-                if (session.Keys.Contains("USER"))
-                {
-                    User loggedUser = session.GetObject<User>("USER");
-                    if (loggedUser != null)
-                    {
-                        if (loggedUser.Username == userName) return true;
-                    }
-                }
-            }
-            return false;
-        }
-        //gets user from database with all associated information
         public static User GetDatabaseInstance(User user)
         {
-            using (AuthenticationContext ctx = context)
-                return ctx.Users.Where(u => u.Username == user.Username).Include(u => u.Role).ToArray()[0];
+            using AuthenticationContext ctx = context;
+            User dbInstance = ctx.Users.Where(u => u.Username == user.Username).SingleOrDefault();
+            return dbInstance;
         }
-        //checks wether the user has the correct password
         public static bool PassedSignin(User user)
         {
-            User dbInstance = GetDatabaseInstance(user);
-            if (user.Username == dbInstance.Username && user.Password == dbInstance.Password) return true;
+            if (user != null)
+            {
+                User dbInstance = GetDatabaseInstance(user);
+                if (user.Username == dbInstance.Username && user.Password.ToString() == dbInstance.Password) return true;
+
+            }
             return false;
         }
-        //signs the user into their session, and adds their session to the list
         public static void SignIn(ISession session, User user)
         {
-            user = GetDatabaseInstance(user);
-            session.SetObject<User>("USER", user);
-            Sessions.Add(session);
+            IncrementUserTimeOuts();
+            ClearTimedOutUsers();
+            if (user != null)
+            {
+                session.SetObject<User>("USER", GetDatabaseInstance(user));
+                LoggedInUsers.Add(new UserTimer { user = GetDatabaseInstance(user), timer = 0, id = session.Id });
+            }
         }
         //removes user from their session and removes their session from the list
         public static void SignOut(ISession session)
         {
+            IncrementUserTimeOuts();
+            ClearTimedOutUsers();
+            LoggedInUsers.Remove(LoggedInUsers.First(ut => ut.user.Username == session.GetObject<User>("USER").Username));
             session.Remove("USER");
-            Sessions.Remove(session);
         }
         //gets the active user for the given session
         public static User CurrentUser(ISession session)
         {
+            IncrementUserTimeOuts();
+            ClearTimedOutUsers();
             User user = session.GetObject<User>("USER");
-            if(user == null)
+            RefreshTimer(user);
+            if (UserSignedIn(user))
             {
-                user = context.Users.Include(u => u.Role).Where(u => u.RoleID == 0).SingleOrDefault();
+                if (LoggedInUsers.First(ut => ut.user.Username == user.Username).id != session.Id)
+                {
+                    session.Remove("USER");
+                    user = null;
+                }
             }
+            else
+            {
+                session.Remove("USER");
+                user = null;
+            }
+            if (user == null)
+                user = context.Users.Find("");
             return user;
+        }
+        public static void EditUser(User user, string NewPassword)
+        {
+            if (UserExists(user))
+            {
+                using AuthenticationContext ctx = context;
+                ctx.Users.Update(user);
+                ctx.SaveChanges();
+            }
+        }
+        public static void DeleteUser(User user)
+        {
+            if (UserExists(user))
+            {
+                using AuthenticationContext ctx = context;
+                ctx.Users.Remove(GetDatabaseInstance(user));
+                ctx.SaveChanges();
+            }
+        }
+
+        protected class UserTimer
+        {
+            public User user;
+            public int timer;
+            public string id;
         }
     }
 }
