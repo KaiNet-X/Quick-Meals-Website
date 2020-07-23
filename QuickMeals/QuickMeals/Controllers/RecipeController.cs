@@ -5,6 +5,7 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using QuickMeals.Data;
 using QuickMeals.Models;
 using QuickMeals.Models.Authentication;
@@ -21,6 +22,7 @@ namespace QuickMeals.Controllers
         {
             context = ctx;
         }
+
         [HttpGet]
         public IActionResult Add()
         {

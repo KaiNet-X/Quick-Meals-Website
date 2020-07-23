@@ -49,6 +49,9 @@ namespace QuickMeals.Models
         //static files such as images need to be stored in wwwroot. in order to get a unique name, they are
         //named after the recipe id
         public static string Base => Directory.GetCurrentDirectory() + "/wwwroot/RecipeImages/";
+
+        //public object id { get; internal set; }
+
         public string GetFileName()
         {
             string[] files = Directory.GetFiles(Base);
