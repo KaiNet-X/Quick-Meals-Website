@@ -5,6 +5,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\**" />
+    <Content Remove="Areas\**" />
+    <EmbeddedResource Remove="Areas\**" />
+    <None Remove="Areas\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Migrations\20200718151306_usrdepens.cs" />
     <Compile Remove="Migrations\20200718151306_usrdepens.Designer.cs" />
     <Compile Remove="Migrations\QuickMeals\20200718151510_recipdepens.cs" />
@@ -14,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\" />
     <Folder Include="wwwroot\RecipeImages\" />
   </ItemGroup>
 

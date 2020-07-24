@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
 using QuickMeals.Models.Authentication;
 using QuickMeals.Models.CustomValidation;
 using Sujith_Site.Models.CustomAttributes;
@@ -30,7 +25,7 @@ namespace QuickMeals.Models
         [Required(ErrorMessage = "Please enter ingredients for your QuickMeal.")]
         public string Ingredients { get; set; }
 
-        [Required(ErrorMessage = "Please tell us how to make your deliscious QuickMeal!")]
+        [Required(ErrorMessage = "Please tell us how to make your delicious QuickMeal!")]
         public string Description { get; set; }
 
         //the primary key for user is a string value, so foreign key needs to bey type string
