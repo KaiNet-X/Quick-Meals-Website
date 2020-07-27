@@ -21,7 +21,7 @@ namespace QuickMeals.Controllers
 
         public IActionResult Index()
         {
-            ViewBag.SignedIn = AuthorizationHandler.IsSignedIn(HttpContext.Session);
+            Utilities.UserToView(this);
             var Recipes = context.Recipes.OrderBy(mbox => mbox.Title).ToList();
             return View(Recipes);
             //need to put name of view here

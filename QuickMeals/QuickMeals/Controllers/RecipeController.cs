@@ -28,28 +28,33 @@ namespace QuickMeals.Controllers
         {
             if (!AuthorizationHandler.IsSignedIn(HttpContext.Session))
                 return RedirectToAction("Index", "Home");
-            ViewBag.SignedIn = AuthorizationHandler.IsSignedIn(HttpContext.Session);
+            Utilities.UserToView(this);
             ViewBag.Action = "Add";
-            return View("Edit", new Recipe());
+            return View("Edit", new Recipe() { Username = AuthenticationHandler.CurrentUser(HttpContext.Session).Username });
         }
         [HttpGet]
         public IActionResult Edit(int id)
         {
             if (!AuthorizationHandler.IsSignedIn(HttpContext.Session))
                 return RedirectToAction("Index", "Home");
-            ViewBag.SignedIn = AuthorizationHandler.IsSignedIn(HttpContext.Session);
-            ViewBag.Action = "Edit";
             var recipe = context.Recipes.Find(id);
+
+            if (AuthenticationHandler.CurrentUser(HttpContext.Session).Username != recipe.Username)
+                return RedirectToAction("Index", "Home");
+
+            Utilities.UserToView(this);
+            ViewBag.Action = "Edit";
             return View(recipe);
-            //need to add recipe view?
         }
         [HttpPost]
         public IActionResult Edit(Recipe recipe)
         {
-            ViewBag.SignedIn = AuthorizationHandler.IsSignedIn(HttpContext.Session);
+            Utilities.UserToView(this);
             if (ModelState.IsValid)
             {
                 if (!AuthorizationHandler.IsSignedIn(HttpContext.Session))
+                    return RedirectToAction("Index", "Home");
+                if (AuthenticationHandler.CurrentUser(HttpContext.Session).Username != recipe.Username)
                     return RedirectToAction("Index", "Home");
                 int ID = recipe.RecipeId;
                 if (recipe.RecipeId == 0)
@@ -87,7 +92,7 @@ namespace QuickMeals.Controllers
         {
             if (!AuthorizationHandler.IsSignedIn(HttpContext.Session))
                 return RedirectToAction("Index", "Home");
-            ViewBag.SignedIn = AuthorizationHandler.IsSignedIn(HttpContext.Session);
+            Utilities.UserToView(this);
             var recipe = context.Recipes.Find(id);
             return View(recipe);
         }
@@ -96,7 +101,7 @@ namespace QuickMeals.Controllers
         {
             if (!AuthorizationHandler.IsSignedIn(HttpContext.Session))
                 return RedirectToAction("Index", "Home");
-            ViewBag.SignedIn = AuthorizationHandler.IsSignedIn(HttpContext.Session);
+            Utilities.UserToView(this);
             if (System.IO.File.Exists(Recipe.Base + recipe.GetFileName()))
                 System.IO.File.Delete(Recipe.Base + recipe.GetFileName());
             context.Recipes.Remove(recipe);
@@ -105,11 +110,12 @@ namespace QuickMeals.Controllers
         }
         public IActionResult Details(Recipe recipe)
         {
+            Utilities.UserToView(this);
             return View(recipe);
         }
         public IActionResult Index()
         {
-            ViewBag.SignedIn = AuthorizationHandler.IsSignedIn(HttpContext.Session);
+            Utilities.UserToView(this);
             return View(context.Recipes.ToList());
         }
     }

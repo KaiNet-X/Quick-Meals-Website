@@ -18,6 +18,7 @@ namespace QuickMeals.Controllers
 
         public ActionResult Results(string searchName)
         {
+            Utilities.UserToView(this);
             var recipes = new List<Recipe>();
             // Filter down if necessary
             if (!String.IsNullOrEmpty(searchName))
