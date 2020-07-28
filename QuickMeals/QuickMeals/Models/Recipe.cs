@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 using Microsoft.AspNetCore.Http;
-using QuickMeals.Models.Authentication;
 using QuickMeals.Models.CustomValidation;
 using Sujith_Site.Models.CustomAttributes;
 
@@ -18,7 +17,7 @@ namespace QuickMeals.Models
         public string Title { get; set; }
 
         [Required(ErrorMessage = "Help us prepare your QuickMeal by providing total cook time minutes.")]
-           //custom attribute
+        //custom attribute
         [MinVal(1)]
         public int CookTime { get; set; }
 
@@ -28,11 +27,9 @@ namespace QuickMeals.Models
         [Required(ErrorMessage = "Please tell us how to make your delicious QuickMeal!")]
         public string Description { get; set; }
 
-        //the primary key for user is a string value, so foreign key needs to bey type string
-
+        //Username of the user who posted this recipe
         public string Username { get; set; } = "";
-        //this associates the user object to the recipe object and allows it to be included
-
+        
         //do not add to database
         [NotMapped]
         [AllowedExtensions(new string[] { ".jpeg", ".jpg", ".png", ".img" }, ErrorMessage = "File must be an image")]

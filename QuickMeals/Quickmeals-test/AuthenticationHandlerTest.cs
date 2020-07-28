@@ -8,6 +8,7 @@ using Xunit;
 
 namespace Quickmeals_test
 {
+    //cannot mock extention methods, cannot sucsessfilly unit test
     public class AuthenticationHandlerTest
     {
         //wont work due to extension method

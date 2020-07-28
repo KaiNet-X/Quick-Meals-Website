@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using QuickMeals.Data;
 using QuickMeals.Models;
 using QuickMeals.Models.Authentication;
@@ -23,6 +19,7 @@ namespace QuickMeals.Controllers
             context = ctx;
         }
 
+        //returns add view with username set if user is signed in
         [HttpGet]
         public IActionResult Add()
         {
@@ -32,6 +29,8 @@ namespace QuickMeals.Controllers
             ViewBag.Action = "Add";
             return View("Edit", new Recipe() { Username = AuthenticationHandler.CurrentUser(HttpContext.Session).Username });
         }
+
+        //returns edit view if user is signed in
         [HttpGet]
         public IActionResult Edit(int id)
         {
@@ -46,6 +45,8 @@ namespace QuickMeals.Controllers
             ViewBag.Action = "Edit";
             return View(recipe);
         }
+
+        //adds or edits the recipe returned to it
         [HttpPost]
         public IActionResult Edit(Recipe recipe)
         {
@@ -87,6 +88,8 @@ namespace QuickMeals.Controllers
 
             }
         }
+
+        //returns view to delete the recipe by id if signed in
         [HttpGet]
         public IActionResult Delete(int id)
         {
@@ -96,6 +99,8 @@ namespace QuickMeals.Controllers
             var recipe = context.Recipes.Find(id);
             return View(recipe);
         }
+
+        //deletes recipe along with recipe image if one exists
         [HttpPost]
         public IActionResult Delete(Recipe recipe)
         {
@@ -111,16 +116,22 @@ namespace QuickMeals.Controllers
             context.SaveChanges();
             return RedirectToAction("Index", "Home");
         }
+
+        //returns a view with detais of the recipe including the photo if one exists
         public IActionResult Details(Recipe recipe)
         {
             Utilities.UserToView(this);
             return View(recipe);
         }
+
+        //view with all recipes
         public IActionResult Index()
         {
             Utilities.UserToView(this);
             return View(context.Recipes.ToList());
         }
+
+        //returns view with recipe posted by the signed in user
         public IActionResult MyRecipes()
         {
             bool SignedIn = true;

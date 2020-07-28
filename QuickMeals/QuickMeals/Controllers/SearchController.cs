@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using QuickMeals.Data;
 using QuickMeals.Models;
@@ -16,6 +15,7 @@ namespace QuickMeals.Controllers
             context = ctx;
         }
 
+        //searches for recipe by keywords it contains
         public ActionResult Results(string searchName)
         {
             Utilities.UserToView(this);

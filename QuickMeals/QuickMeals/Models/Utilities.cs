@@ -1,9 +1,5 @@
 ﻿using QuickMeals.Models.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace QuickMeals.Models
 {

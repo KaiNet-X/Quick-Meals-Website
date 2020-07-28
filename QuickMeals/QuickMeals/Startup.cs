@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,10 +23,12 @@ namespace QuickMeals
         {
             services.AddControllersWithViews();
 
+            services.AddRouting(ro => { ro.AppendTrailingSlash = true; ro.LowercaseUrls = true; });
+
             services.AddMemoryCache();
             services.AddSession();
 
-                        services.AddDbContext<QuickMealsContext>(options =>
+            services.AddDbContext<QuickMealsContext>(options =>
             options.UseSqlServer("Server=tcp:lxiong.database.windows.net,1433;Initial Catalog=QuickMeals;Persist Security Info=False;User ID=lxiong;Password=Summer50317;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"));
                 //Configuration.GetConnectionString("QuickMealContext"))); 
 
