@@ -29,9 +29,9 @@ namespace QuickMeals.Models
         public string Description { get; set; }
 
         //the primary key for user is a string value, so foreign key needs to bey type string
+
         public string Username { get; set; } = "";
         //this associates the user object to the recipe object and allows it to be included
-        public User User { get; set; }
 
         //do not add to database
         [NotMapped]

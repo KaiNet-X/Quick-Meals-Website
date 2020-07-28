@@ -16,7 +16,7 @@ namespace QuickMeals.Controllers
     {
         // I added this controller to get things rolling. Its not set in stone. feel free to 
         // make changes. I also added Views and Models - LX
-        private QuickMealsContext context { get; set; }
+        private QuickMealsContext context;
 
         public RecipeController(QuickMealsContext ctx)
         {
@@ -101,9 +101,12 @@ namespace QuickMeals.Controllers
         {
             if (!AuthorizationHandler.IsSignedIn(HttpContext.Session))
                 return RedirectToAction("Index", "Home");
+
             Utilities.UserToView(this);
+
             if (System.IO.File.Exists(Recipe.Base + recipe.GetFileName()))
                 System.IO.File.Delete(Recipe.Base + recipe.GetFileName());
+
             context.Recipes.Remove(recipe);
             context.SaveChanges();
             return RedirectToAction("Index", "Home");
@@ -117,6 +120,20 @@ namespace QuickMeals.Controllers
         {
             Utilities.UserToView(this);
             return View(context.Recipes.ToList());
+        }
+        public IActionResult MyRecipes()
+        {
+            bool SignedIn = true;
+            User user = new User();
+            Utilities.UserToView(this, ref SignedIn, ref user);
+
+            if (!SignedIn)
+                return RedirectToAction("Index", "Home");
+
+            user = AuthenticationHandler.GetDatabaseInstance(user);
+            List<Recipe> recipes = context.Recipes.Where(r => r.Username == user.Username).ToList();
+
+            return View(recipes);
         }
     }
 }

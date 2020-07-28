@@ -5,12 +5,17 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace QuickMeals.Models.Authentication
 {
+    //static class for managing authentication
     public static class AuthenticationHandler
     {
+        //Has all the logged in users
         private static List<UserTimer> LoggedInUsers = new List<UserTimer>();
+
+        //returns an instance of the AuthenticationContext
         private static AuthenticationContext context
         {
             get
@@ -22,9 +27,15 @@ namespace QuickMeals.Models.Authentication
                 return new AuthenticationContext(optionsBuilder.Options);
             }
         }
+
+        //Used to measure the time in between checks to the user's timed out status
         private static DateTime StopWatch;
+
+        //determines how long the user must be inactive to be automatically logged out
         private static int TimeOutMinutes = 15;
-        private static void IncrementUserTimeOuts()
+
+        //increments the user's timer by how long it has gone since being refreshed
+        private static async Task IncrementUserTimeOuts()
         {
             if (StopWatch == null)
                 StopWatch = DateTime.Now;
@@ -33,18 +44,21 @@ namespace QuickMeals.Models.Authentication
                 for (int i = 0; i < LoggedInUsers.Count; i++)
                 {
                     DateTime now = DateTime.Now;
-                    LoggedInUsers[i].timer += ((now - StopWatch).Minutes * 60 + (now - StopWatch).Seconds);
+                    await new Task(() => 
+                        { LoggedInUsers[i].timer += (now - StopWatch).Minutes * 60 + (now - StopWatch).Seconds; } );
                 }
+                StopWatch = DateTime.Now;
             }
-            StopWatch = DateTime.Now;
         }
-        private static void ClearTimedOutUsers()
+
+        //removes all users that have been timed out
+        private static async Task ClearTimedOutUsers()
         {
             for (int i = 0; i < LoggedInUsers.Count; i++)
             {
                 if ((LoggedInUsers[i].timer) >= TimeOutMinutes * 60)
                 {
-                    LoggedInUsers.Remove(LoggedInUsers[i]);
+                    await new Task(() => LoggedInUsers.Remove(LoggedInUsers[i]));
                 }
             }
         }
@@ -94,7 +108,7 @@ namespace QuickMeals.Models.Authentication
         public static User GetDatabaseInstance(User user)
         {
             using AuthenticationContext ctx = context;
-            User dbInstance = ctx.Users.Where(u => u.Username == user.Username).SingleOrDefault();
+            User dbInstance = ctx.Users.Include(u => u.Role).Where(u => u.Username == user.Username).SingleOrDefault();
             return dbInstance;
         }
         public static bool PassedSignin(User user)
@@ -140,7 +154,7 @@ namespace QuickMeals.Models.Authentication
                     user = null;
                 }
             }
-            else
+            else if (user != null)
             {
                 session.Remove("USER");
                 user = null;
@@ -171,7 +185,9 @@ namespace QuickMeals.Models.Authentication
         protected class UserTimer
         {
             public User user;
+            //how long the user has been inactive for
             public int timer;
+            //session id of the current user
             public string id;
         }
     }
