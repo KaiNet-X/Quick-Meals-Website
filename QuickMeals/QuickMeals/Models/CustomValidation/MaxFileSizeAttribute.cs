@@ -17,7 +17,7 @@ namespace Sujith_Site.Models.CustomAttributes
             _maxFileSize = maxFileSize;
             this.unit = unit;
         }
-
+        //checks if file is below a max size
         protected override ValidationResult IsValid(
         object value, ValidationContext validationContext)
         {
@@ -37,6 +37,8 @@ namespace Sujith_Site.Models.CustomAttributes
         {
             return $"Maximum allowed file size is { _maxFileSize / Math.Pow(1024, (int)unit)} {unit}";
         }
+
+        //reasonable file size units for image upload
         public enum FileSizeUnit
         {
             B,

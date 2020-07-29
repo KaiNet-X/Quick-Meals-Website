@@ -1,0 +1,43 @@
+﻿@model List<Recipe>
+@{
+    ViewData["Title"] = "Search Results";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Search results</h1>
+</div>
+
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>CookTime</th>
+            <th>Ingredient</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var Recipe in Model)
+        {
+            <tr>
+                <td>@Recipe.Title</td>
+                <td>@Recipe.CookTime</td>
+                <td>@Recipe.Ingredients</td>
+                <td>@Recipe.Description</td>
+                <td>
+                    <a asp-controller="Recipe" asp-action="Edit" asp-route-id="@Recipe.RecipeId">Edit</a>
+                    <a asp-controller="Recipe" asp-action="Delete" asp-route-id="@Recipe.RecipeId">Delete</a>
+                    <form asp-controller="Recipe" asp-action="Details">
+                        <button type="submit" class="page-link">Details</button>
+                        <input type="hidden" id="Recipe_RecipeId" name="Recipe.RecipeId" value="@Recipe.RecipeId" />
+                        <input type="hidden" id="Recipe_Title" name="Recipe.Title" value="@Recipe.Title" />
+                        <input type="hidden" id="Recipe_CookTime" name="Recipe.CookTime" value="@Recipe.CookTime" />
+                        <input type="hidden" id="Recipe_Ingredients" name="Recipe.Ingredients" value="@Recipe.Ingredients" />
+                        <input type="hidden" id="Recipe_Description" name="Recipe.Description" value="@Recipe.Description" />
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

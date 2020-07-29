@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using QuickMeals.Data;
 using QuickMeals.Models;
-using QuickMeals.Models.Authentication;
 
 namespace QuickMeals.Controllers
 {
@@ -18,13 +13,12 @@ namespace QuickMeals.Controllers
         {
             this.context = ctx;
         }
-
+        //shows list of al recipes
         public IActionResult Index()
         {
-            ViewBag.SignedIn = AuthorizationHandler.IsSignedIn(HttpContext.Session);
+            Utilities.UserToView(this);
             var Recipes = context.Recipes.OrderBy(mbox => mbox.Title).ToList();
             return View(Recipes);
-            //need to put name of view here
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

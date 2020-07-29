@@ -10,18 +10,18 @@
         <form asp-action="Register">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Username" class="control-label">Username</label>
+                <label asp-for="Username" class="control-label default-font">Username</label>
                 <input asp-for="Username" class="form-control" />
                 <span asp-validation-for="Username" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
+                <label asp-for="Password" class="control-label default-font"></label>
                 <input asp-for="Password" class="form-control" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
-            <input type="hidden" asp-for="RoleID" class="form-control" value="1" />
+            <input type="hidden" asp-for="RoleID" value="1" />
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary default-font" />
             </div>
         </form>
     </div>

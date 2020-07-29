@@ -6,6 +6,7 @@ namespace QuickMeals.Models.Authentication
     {
         [Required]
         public int? RoleID { get; set; }
+        [Required]
         public string RoleName { get; set; }
     }
 }

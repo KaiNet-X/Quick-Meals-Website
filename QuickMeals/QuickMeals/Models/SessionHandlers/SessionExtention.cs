@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using System;
+﻿using System;
 using System.Linq;
 using Newtonsoft.Json;
 
@@ -12,6 +11,7 @@ namespace Microsoft.AspNetCore.Http
         {
             session.SetString(key, JsonConvert.SerializeObject(Object));
         }
+
         //simplifies getting an object from session
         public static T GetObject<T>(this ISession session, string key)
         {

@@ -1,21 +1,20 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Sujith_Site.Models.CustomAttributes
 {
     public class AllowedExtensionsAttribute : ValidationAttribute
     {
         private readonly string[] _extensions;
+        //uses array of strings in constructor for valid extentions
         public AllowedExtensionsAttribute(string[] extensions)
         {
             _extensions = extensions;
         }
-
+        //if using an IFormFile, check if the extension is one of the allowed extentions
         protected override ValidationResult IsValid(
         object value, ValidationContext validationContext)
         {
