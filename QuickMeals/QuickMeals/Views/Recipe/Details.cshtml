@@ -2,6 +2,21 @@
 @{
     ViewData["Title"] = "Details";
 }
+<li class="list-group-item">
+    <form asp-action="Add" method="post">
+        <a asp-action="Index" class="btn btn-primary"
+           asp-route-activeones="@Model.RecipeId"
+           asp-route-activetwos="@Model.Title">
+            Return to List
+        </a>
+        <a asp-action="Add" class="btn btn-primary"
+           asp-route-activeones="@Model.RecipeId"
+           asp-route-activetwos="@Model.Title">
+            Add to Favorites
+        </a>
+        <input type="hidden" asp-for="RecipeId" />
+    </form>
+</li>
 
 <div class="container text-center border-dark bg-light rounded">
     <div class="row">
