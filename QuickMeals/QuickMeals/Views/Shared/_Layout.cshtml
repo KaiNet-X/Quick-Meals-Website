@@ -30,7 +30,7 @@
             font-weight: 300;
             font-size: 20px;
             font-family: lightbeach;
-            background-image: url("../../wwwroot/RecipeImages/bg.png");
+            background-image: url("/RecipeImages/bg.png");
         }
 
         .bg-green {
@@ -65,7 +65,7 @@
         <nav class="navbar navbar-expand-lg navbar-toggleable-lg navbar-dark bg-green text-light border-bottom box-shadow mb-3">
             <div class="container">
                 <img src="~/RecipeImages/recipe.png" alt="recipe book icon" width="50" height="50">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><h2>QuickMeals</h2></a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><h2 style="margin-top:0">QuickMeals</h2></a>
                 <div class="">
                     @using (Html.BeginForm("Results", "Search", FormMethod.Get))
                     {
