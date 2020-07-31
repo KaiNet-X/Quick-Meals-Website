@@ -26,11 +26,11 @@
                 <li class="list-group-item">
                     <div class="row">
                         <div class="col-sm-4">
-                            <img src="-/images/@recipe.3" alt="" />
+                            <img src="-/images/@recipe.RecipeId" alt="" />
 
                         </div>
                         <div class="col-sm-4">
-                            @recipe.Title
+                            <a class="m-2" asp-action="FavoriteDetails" asp-controller="Recipe" asp-route-recipeId="@recipe.RecipeId">@recipe.Title</a>
                         </div>
                         <div class="col-sm-4">
                             @recipe.RecipeId

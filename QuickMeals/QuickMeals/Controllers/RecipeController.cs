@@ -123,6 +123,13 @@ namespace QuickMeals.Controllers
             Utilities.UserToView(this);
             return View(recipe);
         }
+        //created new method for when user wants to view details of favorite recipe
+        public IActionResult FavoriteDetails(int recipeId)
+        {
+            Utilities.UserToView(this);
+            var recipe = context.Recipes.Where(r => r.RecipeId == recipeId).FirstOrDefault();
+            return View(recipe);
+        }
 
         //view with all recipes
         public IActionResult Index()

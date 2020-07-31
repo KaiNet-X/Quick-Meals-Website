@@ -7,53 +7,85 @@ using Microsoft.AspNetCore.Http;
 using QuickMeals.Models;
 using QuickMeals.Data;
 using Newtonsoft.Json;
-//using QuickMeals.Models.SessionHandlers;
+
 
 namespace QuickMeals.Controllers
 {
     public class FavoriteController : Controller
     {
         //Trying to get Favorites working - LX
- 
-            [HttpGet]
-            public ViewResult Index()
+
+        private QuickMealsContext context;
+
+        public FavoriteController(QuickMealsContext ctx)
+        {
+            context = ctx;
+        }
+
+        [HttpGet]
+        public ViewResult Index()
+        {
+            Utilities.UserToView(this);
+            var session = new SessionClass(HttpContext.Session);
+            var model = new ListViewModel
             {
-                var session = new SessionClass(HttpContext.Session);
-                var model = new ListViewModel
+                Activeones = session.GetRecipes(),
+                    
+                Activetwos = session.GetRecipes(),
+                   
+                Recipes = session.GetRecipes()
+            };
+            return View(model);
+        }
+        [HttpPost]
+        public RedirectToActionResult Delete()
+        {
+            Utilities.UserToView(this);
+            var session = new SessionClass(HttpContext.Session);
+            var cookies = new RecipeCookies(Response.Cookies);
+
+            session.RemoveMyRecipes();
+            cookies.RemoveMyRecipeIds();
+
+            TempData["message"] = "Favorite recipes cleared";
+            return RedirectToAction("Index", "Home",
+                new
                 {
-                    Activeones = session.GetRecipes(),
-                    //activeones = session.GetActiveRec(),
-                    Activetwos = session.GetRecipes(),
-                    //activetwos = session.GetActiveRec(),
-                    Recipes = session.GetRecipes()
-                };
-                return View(model);
-            }
-            [HttpPost]
-            public RedirectToActionResult Delete()
+                    ActiveRec = session.GetRecipes(),
+
+            });
+
+        }
+
+ 
+        public RedirectToActionResult Add(int activeones, string activetwos)
+        {
+            Utilities.UserToView(this);
+            //created variable to save recipe
+            var selectRecipe = context.Recipes
+                //find recipe ID
+                .Where(t => t.RecipeId == activeones)
+                .FirstOrDefault(); //if recipeId not valid then null
+            // a session to save the favorite recipe to
+            var session = new SessionClass(HttpContext.Session);
+            //get favorite recipe
+            var favoriteRecipe = session.GetRecipes();
+            //check if favorite recipe is already on the list by comparing recipe id with activeones
+            var existingRecipe = favoriteRecipe.Where(x => x.RecipeId == activeones)
+                .FirstOrDefault();
+            //loop to add recipe if not on list
+            if(existingRecipe == null)
             {
-                var session = new SessionClass(HttpContext.Session);
-                var cookies = new RecipeCookies(Response.Cookies);
-
-                session.RemoveMyRecipes();
-                cookies.RemoveMyRecipeIds();
-
-                TempData["message"] = "Favorite recipes cleared";
-                return RedirectToAction("Index", "Home",
-                    new
-                    {
-                        ActiveRec = session.GetRecipes(),
-                    //ActiveDiv = session.GetActiveDiv()
-                });
-
+                favoriteRecipe.Add(selectRecipe);
+                session.SetMyRecipes(favoriteRecipe);
             }
+            
+       
+            TempData["message"] = $"{activetwos} added to your favorites";
+            
+            return RedirectToAction("Index");
+            
+        }
 
-
-            /**
-            public IActionResult Index()
-            {
-                return View();
-            }
-            **/
     }
 }

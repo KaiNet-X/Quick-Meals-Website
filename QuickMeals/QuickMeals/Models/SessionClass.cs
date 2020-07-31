@@ -11,28 +11,27 @@ namespace QuickMeals.Models
     {
         private const string RecipeKey = "myrecipes";
         private const string CountKey = "recipecount";
-        private const string RecKey = "rec";
+        //private const string RecKey = "rec";
 
         private ISession session { get; set; }
         public SessionClass(ISession session)
         {
             this.session = session;
         }
+        //sets recipes for current session
         public void SetMyRecipes(List<Recipe> recipes)
         {
             session.SetObject(RecipeKey, recipes);
             session.SetInt32(CountKey, recipes.Count);
         }
+        //gets recipes for current session
         public List<Recipe> GetRecipes() =>
             session.GetObject<List<Recipe>>(RecipeKey) ?? new List<Recipe>();
         public int? GetMyTeamCount() => session.GetInt32(CountKey) ?? 0;
-        public void SetActiveRec(string activeRec) =>
-            session.SetString(RecKey, activeRec);
-        public string GetActiveRec() => session.GetString(RecKey);
-
+        //deletes recipes when user clicks on CLEAR FAVORITES from favorite view
         public void RemoveMyRecipes()
         {
-            session.Remove(RecKey);
+            session.Remove(RecipeKey);
             session.Remove(CountKey);
         }
     }
