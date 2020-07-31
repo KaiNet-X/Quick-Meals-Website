@@ -17,7 +17,8 @@ namespace QuickMeals.Controllers
         public IActionResult Index()
         {
             Utilities.UserToView(this);
-            var Recipes = context.Recipes.OrderBy(mbox => mbox.Title).ToList();
+            var Recipes = context.Recipes.ToList();
+            Recipes = Recipes.Where(r => r.GetFileName() != null).ToList();
             return View(Recipes);
         }
 

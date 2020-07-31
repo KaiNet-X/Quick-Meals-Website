@@ -9,6 +9,11 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+
     @RenderSection("Scripts", required: false)
     <style>
         @@font-face {
@@ -20,10 +25,12 @@
             font-family: 'Times New Roman'
         }
 
+
         body {
             font-weight: 300;
             font-size: 20px;
             font-family: lightbeach;
+            background-image: url("../../wwwroot/RecipeImages/bg.png");
         }
 
         .bg-green {
@@ -39,12 +46,15 @@
             border-width: 4px;
             border-radius: 8px;
         }
+
         ::-webkit-scrollbar {
             width: 15px;
         }
-        ::-webkit-scrollbar-track{
-            background-color:lightgreen;
+
+        ::-webkit-scrollbar-track {
+            background-color: lightgreen;
         }
+
         ::-webkit-scrollbar-thumb {
             background-color: #39fc03;
         }
@@ -54,6 +64,7 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-toggleable-lg navbar-dark bg-green text-light border-bottom box-shadow mb-3">
             <div class="container">
+                <img src="~/RecipeImages/recipe.png" alt="recipe book icon" width="50" height="50">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><h2>QuickMeals</h2></a>
                 <div class="">
                     @using (Html.BeginForm("Results", "Search", FormMethod.Get))
