@@ -32,10 +32,10 @@ namespace QuickMeals.Models.Authentication
         private static DateTime StopWatch;
 
         //determines how long the user must be inactive to be automatically logged out
-        private static int TimeOutMinutes = 15;
+        private static readonly int TimeOutMinutes = 15;
 
         //increments the user's timer by how long it has gone since being refreshed
-        private static async Task IncrementUserTimeOuts()
+        private static async void IncrementUserTimeOuts()
         {
             if (StopWatch == null)
                 StopWatch = DateTime.Now;
@@ -52,7 +52,7 @@ namespace QuickMeals.Models.Authentication
         }
 
         //removes all users that have been timed out
-        private static async Task ClearTimedOutUsers()
+        private static async void ClearTimedOutUsers()
         {
             for (int i = 0; i < LoggedInUsers.Count; i++)
             {
@@ -71,6 +71,7 @@ namespace QuickMeals.Models.Authentication
                     u.timer = 0;
             }
         }
+
         public static bool UserExists(User user)
         {
             bool userExists = false;
