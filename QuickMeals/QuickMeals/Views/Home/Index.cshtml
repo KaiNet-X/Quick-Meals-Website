@@ -40,25 +40,39 @@
                             {
                                 @if (i == 0)
                                 {
-                                    <div class="item active" style="height: 250px; overflow-y: hidden;">
-                                        <img src="/RecipeImages/@Recipe.GetFileName()" width="500" style="margin: auto;" />
+                            <div class="item active" style="height: 250px; overflow-y: hidden;">
+                                <form asp-controller="Recipe" asp-action="Details">
+                                    <button type="submit" class="col-12 btn" style="margin: auto;"><img src="/RecipeImages/@Recipe.GetFileName()" width="500" /></button>
                                         <div class="container">
                                             <div class="carousel-caption">
                                                 <h1>@Recipe.Title</h1>
                                             </div>
                                         </div>
-                                    </div>
+                                        <input type="hidden" id="Recipe_RecipeId" name="Recipe.RecipeId" value="@Recipe.RecipeId" />
+                                        <input type="hidden" id="Recipe_Title" name="Recipe.Title" value="@Recipe.Title" />
+                                        <input type="hidden" id="Recipe_CookTime" name="Recipe.CookTime" value="@Recipe.CookTime" />
+                                        <input type="hidden" id="Recipe_Ingredients" name="Recipe.Ingredients" value="@Recipe.Ingredients" />
+                                        <input type="hidden" id="Recipe_Description" name="Recipe.Description" value="@Recipe.Description" />
+</form>
+                            </div>
                                 }
                                 else
                                 {
-                                    <div class="item" style="height: 250px; overflow-y: hidden;">
-                                        <img src="/RecipeImages/@Recipe.GetFileName()" width="500" style="margin: auto;" />
-                                        <div class="container">
-                                            <div class="carousel-caption">
-                                                <h1>@Recipe.Title</h1>
-                                            </div>
-                                        </div>
+                        <div class="item" style="height: 250px; overflow-y: hidden;">
+                            <form asp-controller="Recipe" asp-action="Details">
+                                <button type="submit" class="col-12 btn" style="margin: auto;"><img src="/RecipeImages/@Recipe.GetFileName()" width="500" /></button>
+                                <div class="container">
+                                    <div class="carousel-caption">
+                                        <h1>@Recipe.Title</h1>
                                     </div>
+                                </div>
+                                <input type="hidden" id="Recipe_RecipeId" name="Recipe.RecipeId" value="@Recipe.RecipeId" />
+                                <input type="hidden" id="Recipe_Title" name="Recipe.Title" value="@Recipe.Title" />
+                                <input type="hidden" id="Recipe_CookTime" name="Recipe.CookTime" value="@Recipe.CookTime" />
+                                <input type="hidden" id="Recipe_Ingredients" name="Recipe.Ingredients" value="@Recipe.Ingredients" />
+                                <input type="hidden" id="Recipe_Description" name="Recipe.Description" value="@Recipe.Description" />
+                            </form>
+                        </div>
                                 }
                                 i++; 
                             }
