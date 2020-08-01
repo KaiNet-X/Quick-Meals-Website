@@ -62,7 +62,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-lg navbar-toggleable-lg navbar-dark bg-green text-light border-bottom box-shadow mb-3">
+        <nav style="" class="navbar navbar-expand-lg navbar-toggleable-lg navbar-dark bg-green text-light border-bottom box-shadow mb-3">
             <div class="container">
                 <img src="~/RecipeImages/recipe.png" alt="recipe book icon" width="50" height="50">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><h2 style="margin-top:0">QuickMeals</h2></a>
@@ -70,8 +70,8 @@
                     @using (Html.BeginForm("Results", "Search", FormMethod.Get))
                     {
                         <ul class="nav">
-                            <li>@Html.TextBox("searchName", ViewBag.CurrentFilter as string)</li>
-                            <li><input type="submit" value="Search" /></li>
+                            <li class="text-dark">@Html.TextBox("searchName", ViewBag.CurrentFilter as string)</li>
+                            <li class="text-dark"><input type="submit" value="Search" /></li>
                         </ul>
                     }
                 </div>
@@ -121,13 +121,13 @@
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div style="margin-bottom:7rem;" class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted bg-green">
+    <footer style="position:absolute; bottom: 0px;" class="border-top footer text-muted bg-green">
         <div class="container text-white">
             &copy; 2020 - QuickMeals
         </div>
