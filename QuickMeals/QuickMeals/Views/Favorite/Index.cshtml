@@ -1,5 +1,5 @@
 ﻿@model ListViewModel
-@{ 
+@{
     ViewData["Title"] = "Favorites";
 }
 <div class="text-center">
@@ -16,22 +16,26 @@
     </form>
     <br />
 </div>
-<div class="row"><div class="col-8 offset-2">
-    <ul class="list-group">
-        @foreach (Recipe recipe in Model.Recipes)
-        {
-        <li class="list-group-item">
-            <div class="row">
-                <div class="col-sm-4">
-                    <img src="~/images/@recipe.File" alt="" />
-                </div>
-                <div class="col-sm-4">
-                    @recipe.Title
-                </div>
-            </div>
-        </li>
-        }
+<div class="row">
+    <div class="col-8 offset-2">
+        <ul class="list-group">
+            @foreach (Recipe recipe in Model.Recipes)
+            {
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <img src="~/images/@recipe.File" alt="" />
+                        </div>
+                        <div class="col-sm-4">
+                            @recipe.RecipeId
+                        </div>
+                        <div class="col-sm-4">
+                            <a class="m-2" asp-action="FavoriteDetails" asp-controller="Recipe" asp-route-recipeId="@recipe.RecipeId">@recipe.Title</a>
+                        </div>
+
+                    </div>
+                </li>
+            }
         </ul>
     </div>
-                       
-    </div>
+</div>

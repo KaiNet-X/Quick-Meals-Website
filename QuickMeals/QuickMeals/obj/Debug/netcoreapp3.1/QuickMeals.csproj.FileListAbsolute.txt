@@ -306,3 +306,4 @@ C:\Users\User\Documents\GitHub\Quick-Meals-Website\QuickMeals\QuickMeals\obj\Deb
 C:\Users\15157\Source\Repos\Quick-Meals-Website\QuickMeals\QuickMeals\obj\Debug\netcoreapp3.1\Razor\Views\Favorite.cshtml.g.cs
 C:\Users\15157\Source\Repos\Quick-Meals-Website\QuickMeals\QuickMeals\obj\Debug\netcoreapp3.1\Razor\Views\Favorite\Index.cshtml.g.cs
 C:\Users\15157\Source\Repos\Quick-Meals-Website\QuickMeals\QuickMeals\obj\Debug\netcoreapp3.1\Razor\Views\Recipe\MyRecipes.cshtml.g.cs
+C:\Users\User\Documents\GitHub\Quick-Meals-Website\QuickMeals\QuickMeals\obj\Debug\netcoreapp3.1\Razor\Views\Recipe\FavoriteDetails.cshtml.g.cs
