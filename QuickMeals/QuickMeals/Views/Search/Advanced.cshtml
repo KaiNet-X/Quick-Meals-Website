@@ -1,0 +1,22 @@
+﻿@model QuickMeals.Models.AdvancedSearch
+@using (Html.BeginForm("Advanced", "Search", FormMethod.Post))
+{
+    ViewData["Title"] = "Advanced Search";
+
+<div class="text-center">
+    <h1 class="display-4">Advanced Search</h1>
+</div>
+<b>Protein: </b>
+<br />
+<span>Chicken: </span> @Html.CheckBoxFor(m => m.Chicken, true)
+<span> | Beef: </span> @Html.CheckBoxFor(m => m.Beef, false)
+<span> | Tofu: </span> @Html.CheckBoxFor(m => m.Tofu, false)
+<br />
+<b>Spices: </b>
+<br />
+<span>Parsley: </span> @Html.CheckBoxFor(m => m.Parsley, true)
+<span> | Rosemary: </span> @Html.CheckBoxFor(m => m.Rosemary, false)
+<span> | Thyme: </span> @Html.CheckBoxFor(m => m.Thyme, false)
+<span> | Stardust: </span> @Html.CheckBoxFor(m => m.Stardust, false)
+<button type="submit">Search</button>
+ }
